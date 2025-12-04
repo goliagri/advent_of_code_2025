@@ -1,3 +1,4 @@
+#https://adventofcode.com/2025/day/2
 import math
 
 INPUT_FILENAME = "inputs/input_02.txt"
