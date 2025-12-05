@@ -127,7 +127,7 @@ def sum_invalid_ids_pt2(ranges):
                 print('*{}'.format(repeat_sums))
                 res += repeat_sums
 
-                cur_pref = 10**(i+1)
+                cur_pref = 10**(i+1)    
 
     return res
 
