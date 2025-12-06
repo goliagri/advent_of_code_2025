@@ -12,6 +12,7 @@ def find_fresh_ingredients(ranges, IDs):
     def bts(val, lo, hi):
         if lo >= hi:
             return False
+        
         mid = (lo+hi)//2
         a,b = non_overlapping_ranges[mid]
         if val >= a and val <= b:
@@ -25,16 +26,17 @@ def find_fresh_ingredients(ranges, IDs):
 
     res = 0
     for id in IDs:
-        #if bts(id, 0, len(ranges)):
-        #    res += 1
-
+        if bts(id, 0, len(non_overlapping_ranges)):
+            res += 1
+        ''' #Debugging!
         for a,b in non_overlapping_ranges:
             if id >= a and id <= b:
                 res += 1
                 if not bts(id, 0, len(non_overlapping_ranges)):
                     print("MISSED BINARY SEARCH: Range --- {} ; ID --- {}".format((a,b), id))
                 break
-        
+        '''
+
     return res
 
 def combine_overlapping_ranges(ranges):
