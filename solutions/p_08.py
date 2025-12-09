@@ -30,11 +30,10 @@ class DisjointSets: #union find datastructure
 
         return sets
 
+    def get_num_unique_sets(self) -> int:
+        return len(set([i for i in range(len(self.parent)) if self.parent[i] == i]))
 
-
-
-
-def get_cycle_counts(data):
+def get_cycle_counts(data) -> list[int]:
     CONNECTIONS_MADE = 1000
 
     #construct list of connections of the form (distance, idx of 1st box, idx of 2nd box)
@@ -58,14 +57,35 @@ def get_cycle_counts(data):
     return [len(s) for s in dis_sets.get_sets()]
 
 
+def get_x_prod_of_full_circuit_connection(data) -> int:
+
+    #construct list of connections of the form (distance, idx of 1st box, idx of 2nd box)
+    connection_distances = []
+    for i in range(len(data)):
+        for j in range(i+1, len(data)):
+            a_0, a_1, a_2 = data[i]
+            b_0, b_1, b_2 = data[j]
+            dist = ((a_0-b_0)**2 + (a_1-b_1)**2 + (a_2-b_2)**2)**(1/2)
+            connection_distances.append((dist, i, j))
+    
+    connection_distances.sort()
+    dis_sets = DisjointSets(len(data))
+
+    for connection in connection_distances:
+        dist, i, j = connection
+        dis_sets.union(i, j)
+        if dis_sets.get_num_unique_sets() == 1:
+            return data[i][0] * data[j][0]
+        
+    raise Exception('Failed to fully connect somehow')
 
 
-def get_prod_of_3_largest(cycle_counts):
+def get_prod_of_3_largest(cycle_counts) -> int:
     cycle_counts = sorted(cycle_counts, reverse=True)
     return math.prod(cycle_counts[:3])
 
 
-def get_data():
+def get_data() -> list[list[int]]:
     with open(INPUT_FILENAME) as f:
         lines = f.readlines()
         data = [tuple([int(a.strip()) for a in line.split(',')]) for line in lines]
@@ -77,8 +97,11 @@ def main():
     data = get_data()
     cycle_counts = get_cycle_counts(data)
     p1_sol = get_prod_of_3_largest(cycle_counts)
+    p2_sol = get_x_prod_of_full_circuit_connection(data)
 
     print("product of 3 largest cycle counts: {}".format(p1_sol))
+    print("x product of 2 boxes which make last connection before fully connected: {}".format(p2_sol))
+
 
 if __name__ == "__main__":
     main()
