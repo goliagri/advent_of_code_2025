@@ -1,5 +1,5 @@
 #https://adventofcode.com/2025/day/8
-INPUT_FILENAME = "inputs/inputs_08.txt"
+INPUT_FILENAME = "inputs/input_08.txt"
 
 import math
 
