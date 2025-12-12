@@ -34,6 +34,49 @@ def get_min_button_presses(data):
 
     return res
 
+''' #Wayyyy too inneficient, can't do searching over such a large space
+def get_min_button_presses_joltage(data):
+    res = 0
+
+    def bfs(target, buttons):
+        
+        visited = {} #dict of frozen sets -> minimum num of steps to reach
+        frontier = [] #bfs means queue-ordered frontier in terms of frozen sets.
+
+        visited[tuple([0 for _ in range(len(target))])] = 0
+        frontier.append(tuple([0 for _ in range(len(target))]))
+
+        while frontier:
+            cur_state = frontier.pop(0)
+            #print(cur_state)
+            for i in range(len(target)):
+                if target[i] < cur_state[i]:
+                    continue
+            cur_depth = visited[cur_state]
+            if cur_state == target:
+                return cur_depth
+            next_depth = cur_depth + 1
+            for button in buttons:
+                next_state = list(cur_state)
+                for a in button:
+                    next_state[a] += 1
+                next_state = tuple(next_state)
+                if not next_state in visited.keys():
+                    frontier.append(next_state)
+                    visited[next_state] = next_depth
+                
+        return None #failed to find any series of button presses to reach target state
+
+    for machine_spec in data:
+        #we want to use button presses to search space 
+        min_button_presses = bfs(machine_spec['joltage_limits'], machine_spec['buttons'])
+        print('!')
+        if min_button_presses is None:
+            raise Exception('failed to find any solving set of button presses')
+        res += min_button_presses
+
+    return res
+'''
 
 def get_data():
     res = []
@@ -67,8 +110,10 @@ def get_data():
 def main():
     data = get_data()
     p1_sol = get_min_button_presses(data)
+    p2_sol = get_min_button_presses_joltage(data)
 
     print('minimum presses to turn all machines on: {}'.format(p1_sol))
+    print('minimum presses to achieve joltage targets: {}'.format(p2_sol))
 
 if __name__ == "__main__":
     main()
