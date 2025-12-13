@@ -109,7 +109,7 @@ def make_reverse_graph(data):
                 edges[n2] = []
             edges[n2].append(n1)
     
-    edges['you'] = []
+    edges['svr'] = []
 
     return edges
 
@@ -126,7 +126,7 @@ def main():
     graph = make_graph(data)
     p1_sol = count_paths(reverse_graph, 'out', 'you')
 
-    p2_sol = count_paths_traversing_nodes(graph, ['dac', 'fft'])
+    p2_sol = count_paths_traversing_nodes(reverse_graph, ['dac', 'fft'], 'out', 'svr')
 
     print('number of unique paths from you to out {}'.format(p1_sol))
     print('num of unique paths svr to out through dac and fft: {}'.format(p2_sol))
