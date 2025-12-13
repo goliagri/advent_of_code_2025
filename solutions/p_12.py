@@ -9,11 +9,16 @@ def can_fit_under_tree(shapes, shape_counts, grid_shape) -> bool:
     grid_shape = (x,y) specifying rows and cols in tree grid
     return: True iff shapes can be fit under tree grid
     '''
-    print('--------')
+    print('--- Solving Tree')
     if not basic_feasability(shapes, shape_counts, grid_shape):
-        print('!')
+        print('Trivially Infeasible')
         return False
-    return greedy_packing(shapes, shape_counts, grid_shape)
+    if greedy_packing(shapes, shape_counts, grid_shape):
+        print('solved by greedy packing')
+        return True
+    else:
+        print('unsolved by greedy packing')
+        return False
 
 def can_fit(shape: np.ndarray , grid_seg :np.ndarray) -> bool:
     return not np.sum(shape[grid_seg != 0])
@@ -46,7 +51,7 @@ def basic_feasability(shapes: list[np.ndarray], shape_counts: list[int], grid_sh
 #----------------------------------------------------------------
 def greedy_packing(shapes, shape_counts, grid_shape):
     #we iterate from top left through grid, and whenever we can place a shape we do so, tiebreaking based on count left
-    
+    #seems like greedy packing is sufficient to solve every actual tree.
     grid = np.zeros(grid_shape)
     for i in range(grid_shape[0] - 2):
         for j in range(grid_shape[1] - 2):
